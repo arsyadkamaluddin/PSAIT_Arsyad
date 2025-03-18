@@ -15,8 +15,8 @@ switch ($request_method) {
     case 'POST':
         $data = json_decode(file_get_contents("php://input"), true);
         if (isset($_GET["id"])) {
-            updateCategory($data, $_GET["id"]);
-        } elseif (isset($_GET["category"])) {
+            updateCategory($_GET["id"], $data);
+        } else {
             insertCategory($data);
         }
         break;
@@ -36,8 +36,8 @@ function getCategories()
 {
     global $conn;
     $result = mysqli_query($conn, "SELECT * FROM categories");
-    $category = mysqli_fetch_assoc($result);
-    echo json_encode($category);
+    $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    echo json_encode($categories);
 }
 function getCategory($id)
 {
@@ -65,4 +65,11 @@ function deleteCategory($id)
     }
     mysqli_query($conn, "DELETE FROM categories WHERE id = $id");
     echo json_encode(["message" => "Category deleted successfully"]);
+}
+function updateCategory($id, $data)
+{
+    global $conn;
+    $name = $data["name"];
+    mysqli_query($conn, "UPDATE categories SET name='$name'  WHERE id = $id");
+    echo json_encode(["message" => "Category updated successfully"]);
 }
