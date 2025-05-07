@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: ./");
 }
 $product = getProduct($_GET["id"]);
-$categories = getCategories();
+$categories = getCategories()[0];
 ?>
 <!DOCTYPE html>
 <html>

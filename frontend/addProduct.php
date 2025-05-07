@@ -4,7 +4,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     insertProduct($_POST);
     header("Location: ./");
 }
-$categories = getCategories();
+$categories = getCategories()[0];
 ?>
 <!DOCTYPE html>
 <html>

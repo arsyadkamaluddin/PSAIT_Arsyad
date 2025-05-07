@@ -14,8 +14,10 @@ if (isset($_GET["id"]) && isset($_GET["delete"]) && isset($_GET["type"])) {
     }
     header("Location: ./");
 }
-$products = getProducts();
-$categories = getCategories();
+$products = getProducts()[0];
+$categories = getCategories()[0];
+$products_local = getProducts()[1];
+$categories_local = getCategories()[1];
 
 ?>
 <!DOCTYPE html>
@@ -30,7 +32,7 @@ $categories = getCategories();
 
 <body>
     <div class="container mt-5">
-        <h1 class="mb-4">Product Management</h1>
+        <h1 class="mb-4">Product Management (API)</h1>
 
         <div class="row">
             <div class="col-md-6">
@@ -74,6 +76,68 @@ $categories = getCategories();
                             </thead>
                             <tbody>
                                 <?php foreach ($products as $product): ?>
+                                    <tr>
+                                        <td><?= $product['name'] ?></td>
+                                        <td><?= getCategory($product['category_id'])['name'] ?></td>
+                                        <td>Rp<?= number_format($product['price'], 0, ',', '.') ?></td>
+                                        <td class="text-end">
+                                            <a href="editProduct.php?id=<?= $product['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
+                                            <a href="index.php?delete=1&id=<?= $product['id'] ?>&type=product" class="btn btn-sm btn-danger" onclick="return confirm('Yakin?')">Delete</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <h1 class="mb-4">Product Management (Local)</h1>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Categories</h5>
+                        <a href="addCategory.php" class="btn btn-primary btn-sm">Add Category</a>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tbody>
+                                <?php foreach ($categories_local as $category): ?>
+                                    <tr>
+                                        <td><?= $category['name'] ?></td>
+                                        <td class="text-end">
+                                            <a href="editCategory.php?id=<?= $category['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
+                                            <a href="index.php?delete=1&id=<?= $category['id'] ?>&type=category" class="btn btn-sm btn-danger" onclick="return confirm('Yakin?')">Delete</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Products</h5>
+                        <a href="addProduct.php" class="btn btn-primary btn-sm">Add Product</a>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($products_local as $product): ?>
                                     <tr>
                                         <td><?= $product['name'] ?></td>
                                         <td><?= getCategory($product['category_id'])['name'] ?></td>
